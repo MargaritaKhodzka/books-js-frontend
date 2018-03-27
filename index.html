@@ -1,20 +1,24 @@
 <!DOCTYPE html>
 <html>
+
   <head>
     <title>Books</title>
     <link href="https://afeld.github.io/emoji-css/emoji.css" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="styles/style.css">
   </head>
+
   <body>
     <div class="container">
       <div id="new-book-container">
         <form id="new-book-form">
           <input type="text" name="book-title" id="new-book-title">
-          <input type="submit" value="Save book">
+          <input type="submit" value="Add book">
         </form>
       </div>
-      <div id="books-container">
 
+      <div id="books-content">
+        <div id="books-container"></div>
+        <div id="book-show"></div>
       </div>
     </div>
 
@@ -24,4 +28,5 @@
     <script type="text/javascript" src="src/components/app.js"></script>
     <script type="text/javascript" src="src/index.js"></script>
   </body>
+  
 </html>
