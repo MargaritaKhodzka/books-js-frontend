@@ -15,8 +15,7 @@ class BooksAdapter {
       },
       title: JSON.stringify({ title })
     }
-    return fetch(this.baseUrl, bookCreateParams)
-    .then(res => res.json())
+    return fetch(this.baseUrl, bookCreateParams).then(res => res.json())
   }
 
   updateBook(title, id) {
