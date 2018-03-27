@@ -1,6 +1,6 @@
 class BooksAdapter {
   constructor() {
-    this.baseUrl = "http://localhost:3000/api/v1/books"
+    this.baseUrl = 'http://localhost:3000/api/v1/books'
   }
 
   getBooks() {
@@ -9,20 +9,33 @@ class BooksAdapter {
 
   createBook(title) {
     const bookCreateParams = {
-      method: "POST",
+      method: 'POST',
       headers: {
-        "Content-Type": "application/json"
+        'Content-Type': 'application/json'
       },
-      title: JSON.stringify({title})
+      title: JSON.stringify({ title })
     }
-    return fetch(this.baseUrl, bookCreateParams).then(res => res.json())
+    return fetch(this.baseUrl, bookCreateParams)
+    .then(res => res.json())
+  }
+
+  updateBook(title, id) {
+    const bookUpdateParams = {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      title: JSON.stringify({ title })
+    }
+    return fetch(`${this.baseUrl}/${id}`, bookUpdateParams)
+    .then(res => res.json())
   }
 
   deleteBook(bookId) {
     const bookDeleteParams = {
-      method: "DELETE",
+      method: 'DELETE',
       headers: {
-        "Content-Type": "application/json"
+        'Content-Type': 'application/json'
       }
     }
     return fetch(`${this.baseUrl}/${bookId}`, bookDeleteParams)
