@@ -34,7 +34,7 @@ class Books {
   handleDeleteBook() {
     if (event.target.dataset.action === 'delete-book' && event.target.parentElement.classList.contains("book-element")) {
       const bookId = event.target.parentElement.dataset.bookid
-      this.adpater.deleteBook(bookId)
+      this.adapter.deleteBook(bookId)
       .then(resp => this.removeDeleteBook(resp))
     }
   }

@@ -25,6 +25,7 @@ class BooksAdapter {
         "Content-Type": "application/json"
       }
     }
-    return fetch(`${this.baseUrl}/${bookId}`, bookDeleteParams).then(res => res.json())
+    return fetch(`${this.baseUrl}/${bookId}`, bookDeleteParams)
+    .then(res => res.json())
   }
 }
