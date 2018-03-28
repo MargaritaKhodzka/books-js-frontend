@@ -11,16 +11,15 @@ class Books {
     this.bookInput = document.getElementById('new-book-title')
     this.booksNode = document.getElementById('books-container')
     this.bookShowNode = document.getElementById('book-show')
-    this.title = document.querySelector('title')
+    this.body = document.querySelector('body')
 
     this.booksForm.addEventListener('submit', this.handleAddBook.bind(this))
     this.booksNode.addEventListener('click', this.handleBookClick.bind(this))
-    this.title.addEventListener('blur', this.updateBook.bind(this), true)
+    this.body.addEventListener('blur', this.updateBook.bind(this), true)
   }
 
   fetchAndLoadBooks() {
-    this.adapter
-      .getBooks()
+    this.adapter.getBooks()
       .then(booksJSON => booksJSON.forEach(book => this.books.push(new Book(book))))
       .then(this.render.bind(this))
       .catch((error) => console.log(error))
@@ -45,8 +44,7 @@ class Books {
   handleAddBook() {
     event.preventDefault()
     const title = this.bookInput.value
-    this.adapter
-      .createBook(title)
+    this.adapter.createBook(title)
       .then((bookJSON) => this.books.push(new Book(bookJSON)))
       .then(this.render.bind(this))
       .then(() => (this.bookInput.value = ''))

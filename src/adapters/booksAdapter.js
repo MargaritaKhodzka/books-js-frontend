@@ -8,23 +8,31 @@ class BooksAdapter {
   }
 
   createBook(title) {
+    const book = {
+      title: title
+    }
+
     const bookCreateParams = {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
       },
-      title: JSON.stringify({ title })
+      body: JSON.stringify({ book })
     }
     return fetch(this.baseUrl, bookCreateParams).then(res => res.json())
   }
 
   updateBook(title, id) {
+    const book = {
+      title: title
+    }
+
     const bookUpdateParams = {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json'
       },
-      title: JSON.stringify({ title })
+      body: JSON.stringify({ book })
     }
     return fetch(`${this.baseUrl}/${id}`, bookUpdateParams)
     .then(res => res.json())

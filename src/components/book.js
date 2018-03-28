@@ -13,6 +13,6 @@ class Book {
       this
     )}' class='book-element'><a class="show-link" href='#'>${
       this.title
-    }</a><button data-action='edit-book'>Edit</button> <i data-action='delete-book' class="em em-scream_cat"></i></li>`
+    }</a><button data-action='edit-book'>Edit</button><button data-action='delete-book'>Delete</button></li>`
   }
 }
