@@ -2,10 +2,11 @@ class Book {
   constructor(bookJSON) {
     this.title = bookJSON.title
     this.id = bookJSON.id
+    this.author = bookJSON.author
   }
 
   renderShow() {
-    return `<h3>${this.title}</h3>`
+    return `<h3>${this.title} by ${this.author}</h3>`
   }
 
   render() {

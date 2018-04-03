@@ -9,7 +9,8 @@ class BooksAdapter {
 
   createBook(title) {
     const book = {
-      title: title
+      title: title,
+      author: author
     }
 
     const bookCreateParams = {
