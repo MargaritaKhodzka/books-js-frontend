@@ -32,11 +32,13 @@ class Books {
       target.classList.remove('editable')
       const title = event.target.innerHTML
       const bookId = target.dataset.bookid
-      this.adapter.updateBook(title, bookId)
-        .then(updatedBook => {this.books = this.books.map(
-          b => (b.id === updatedBook.id ? new Book(updatedBook) : b)
+      this.adapter.updateBook(title, bookId).then(updatedBook => {
+        const newBook = new Book(updatedBook)
+        this.books = this.books.map(
+          b => (b.id === updatedBook.id ? newBook : b)
         )
         this.render()
+        this.bookShowNode.innerHTML = newBook.renderShow()
       })
     }
   }
