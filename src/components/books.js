@@ -14,6 +14,7 @@ class Books {
     this.body = document.querySelector('body')
 
     this.booksForm.addEventListener('submit', this.handleAddBook.bind(this))
+    this.bookShowNode.addEventListener('submit', this.handleAddComment.bind(this), false)
     this.booksNode.addEventListener('click', this.handleBookClick.bind(this))
     this.body.addEventListener('blur', this.updateBook.bind(this), true)
   }
@@ -23,6 +24,43 @@ class Books {
       .then(booksJSON => booksJSON.forEach(book => this.books.push(new Book(book))))
       .then(this.render.bind(this))
       .catch((error) => console.log(error))
+  }
+
+  handleAddBook() {
+    event.preventDefault()
+    const title = this.bookInput.value
+    this.adapter.createBook(title)
+      .then((bookJSON) => this.books.push(new Book(bookJSON)))
+      .then(this.render.bind(this))
+      .then(() => (this.bookInput.value = ''))
+  }
+
+  handleBookClick() {
+    if (event.target.className === 'show-link') {
+      const bookId = event.target.parentElement.dataset.bookid
+      const book = this.books.find(book => book.id === +bookId)
+      this.bookShowNode.innerHTML = book.renderShow()
+    } else if (event.target.dataset.action === 'edit-book') {
+      this.toggleEditBook()
+    } else if (
+      event.target.dataset.action === 'delete-book' &&
+      event.target.parentElement.classList.contains('book-element')
+    ) {
+      const bookId = event.target.parentElement.dataset.bookid
+      this.adapter.deleteBook(bookId).then(resp => this.removeDeletedBook(resp))
+    }
+  }
+
+  toggleEditBook() {
+    const { parentElement: target } = event.target
+    if (target.className == 'book-element') {
+      target.classList.add('editable')
+      const bookId = target.dataset.bookid
+      const book = this.books.find(b => b.id == bookId)
+      target.contentEditable = true
+      target.innerHTML = book.title
+      target.focus()
+    }
   }
 
   updateBook() {
@@ -43,47 +81,6 @@ class Books {
     }
   }
 
-  handleAddBook() {
-    event.preventDefault()
-    const title = this.bookInput.value
-    this.adapter.createBook(title)
-      .then((bookJSON) => this.books.push(new Book(bookJSON)))
-      .then(this.render.bind(this))
-      .then(() => (this.bookInput.value = ''))
-  }
-
-  toggleEditBook() {
-    const { parentElement: target } = event.target
-    if (target.className == 'book-element') {
-      target.classList.add('editable')
-      const bookId = target.dataset.bookid
-      const book = this.books.find(b => b.id == bookId)
-      target.contentEditable = true
-      target.innerHTML = book.title
-      target.focus()
-    }
-  }
-
-  handleBookClick() {
-    if (
-      event.target.dataset.action === 'delete-book' &&
-      event.target.parentElement.classList.contains('book-element')
-    ) {
-      const bookId = event.target.parentElement.dataset.bookid
-      this.adapter.deleteBook(bookId).then(resp => this.removeDeletedBook(resp))
-    } else if (
-      event.target.dataset.action === 'edit-book'
-    ) {
-      this.toggleEditBook()
-    } else if (
-      event.target.className === 'show-link'
-    ) {
-      const bookId = event.target.parentElement.dataset.bookid
-      const book = this.books.find(book => book.id === +bookId)
-      this.bookShowNode.innerHTML = book.renderShow()
-    }
-  }
-
   removeDeletedBook(deleteResponse) {
     this.books = this.books.filter(book => book.id !== deleteResponse.bookId)
     this.render()
@@ -95,5 +92,17 @@ class Books {
 
   render() {
     this.booksNode.innerHTML = `<ul>${this.booksHTML()}</ul>`
+  }
+
+  handleAddComment (e) {
+    e.preventDefault()
+    const content = event.target.children[0].value
+    const bookId = event.target.dataset.id
+    const book = this.books.find(b => b.id === +bookId)
+    this.adapter.createComment(content, bookId)
+    .then(c => {
+      book.addComment(new Comment(c))
+      this.bookShowNode.innerHTML = book.renderShow()
+    })
   }
 }
