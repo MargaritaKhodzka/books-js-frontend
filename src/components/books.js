@@ -18,6 +18,7 @@ class Books {
     this.body.addEventListener('blur', this.updateBook.bind(this), true)
     this.booksNode.addEventListener('click', this.handleBookClick.bind(this))
     this.bookShowNode.addEventListener('submit', this.handleAddComment.bind(this))
+    this.bookShowNode.addEventListener('click', this.handleCommentClick.bind(this))
   }
 
   fetchAndLoadBooks() {
@@ -49,6 +50,7 @@ class Books {
       target.classList.remove('editable')
       const title = event.target.innerHTML
       const bookId = target.dataset.bookid
+
       this.adapter.updateBook(title, bookId).then(updatedBook => {
         const newBook = new Book(updatedBook)
         this.books = this.books.map(
@@ -100,6 +102,20 @@ class Books {
 
   render() {
     this.booksNode.innerHTML = `<ul>${this.booksHTML()}</ul>`
+  }
+
+  handleCommentClick() {
+    if (event.target.dataset.action === 'delete-comment') {
+      const { parentElement: target } = event.target
+      const bookId = target.dataset.bookid
+      const commentId = target.dataset.commentid
+      const book = this.books.find(book => book.id === +bookId)
+      this.adapter.deleteComment(bookId, commentId)
+      .then(data => {
+        book.removeComment(data.commentId)
+        this.bookShowNode.innerHTML = book.renderShow()
+      })
+    }
   }
 
   handleAddComment(event) {

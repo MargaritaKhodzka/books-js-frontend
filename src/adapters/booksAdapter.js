@@ -50,6 +50,17 @@ class BooksAdapter {
     .then(res => res.json())
   }
 
+  deleteComment(bookId, commentId) {
+    const commentDeleteParams = {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    }
+    return fetch(`${this.baseUrl}/${bookId}/comments/${commentId}`, commentDeleteParams)
+    .then(res => res.json())
+  }
+
   createComment (content, id) {
     const commentCreateParams = {
       method: 'POST',

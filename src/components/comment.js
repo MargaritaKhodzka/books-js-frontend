@@ -7,6 +7,9 @@ class Comment {
 
   render () {
     return `<li data-commentid='${this.id}' data-bookid='${this.bookId}'>
-    ${this.content}</li>`
+    ${this.content}
+    <button data-action='edit-comment'>Edit</button>
+    <button data-action='delete-comment'>x</button>
+    </li>`
   }
 }

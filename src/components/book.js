@@ -7,6 +7,10 @@ class Book {
     this.loadComments(bookJSON.comments)
   }
 
+  removeComment(commentId) {
+    this.comments = this.comments.filter(comment => comment.id !== commentId)
+  }
+
   addComment(newComment) {
     this.comments = this.comments.concat(newComment)
   }
