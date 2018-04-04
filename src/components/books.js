@@ -8,7 +8,8 @@ class Books {
 
   initBindingsAndEventListeners() {
     this.booksForm = document.getElementById('new-book-form')
-    this.bookInput = document.getElementById('new-book-title')
+    this.bookTitle = document.getElementById('new-book-title')
+    this.bookAuthor = document.getElementById('new-book-author')
     this.booksNode = document.getElementById('books-container')
     this.bookShowNode = document.getElementById('book-show')
     this.body = document.querySelector('body')
@@ -32,11 +33,13 @@ class Books {
 
   handleAddBook() {
     event.preventDefault()
-    const title = this.bookInput.value
-    this.adapter.createBook(title)
+    const title = this.bookTitle.value
+    const author = this.bookAuthor.value
+    this.adapter.createBook(title, author)
       .then((bookJSON) => this.books.push(new Book(bookJSON)))
       .then(this.render.bind(this))
-      .then(() => (this.bookInput.value = ''))
+      .then(() => (this.bookTitle.value = '') )
+      .then(() => (this.bookAuthor.value = '') )
   }
 
   updateBook() {

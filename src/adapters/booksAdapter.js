@@ -7,7 +7,7 @@ class BooksAdapter {
     return fetch(this.baseUrl).then(res => res.json())
   }
 
-  createBook(title) {
+  createBook(title, author) {
     const book = {
       title: title,
       author: author
