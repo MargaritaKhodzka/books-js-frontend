@@ -59,10 +59,10 @@ class Books {
 
   toggleEditBook() {
     const { parentElement: target } = event.target
-    if (target.className == 'book-element') {
+    if (target.className === 'book-element') {
       target.classList.add('editable')
       const bookId = target.dataset.bookid
-      const book = this.books.find(book => book.id === bookId)
+      const book = this.books.find(book => book.id == bookId)
       target.contentEditable = true
       target.innerHTML = book.title
       target.focus()
@@ -99,15 +99,16 @@ class Books {
     this.booksNode.innerHTML = `<ul>${this.booksHTML()}</ul>`
   }
 
-  handleAddComment (event) {
+  handleAddComment(event) {
     event.preventDefault()
     const content = event.target.children[0].value
     const bookId = event.target.dataset.id
-    const book = this.books.find(b => b.id === +bookId)
+    const book = this.findById(bookId)
+
     this.adapter.createComment(content, bookId)
-    .then(c => {
-      book.addComment(new Comment(c))
-      this.bookShowNode.innerHTML = book.renderShow()
-    })
+      .then(comment => {
+        book.addComment(new Comment(comment, bookId))
+        this.bookShowNode.innerHTML = book.renderShow()
+      })
   }
 }
