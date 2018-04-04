@@ -10,10 +10,10 @@ class Book {
   }
 
   render() {
-    return `<li data-bookid='${this.id}' data-props='${JSON.stringify(
-      this
-    )}' class='book-element'><a class="show-link" href='#'>${
-      this.title
-    }</a><button data-action='edit-book'>Edit</button><button data-action='delete-book'>Delete</button></li>`
+    return `<li data-bookid='${this.id}' data-props='${JSON.stringify(this)}'
+    class='book-element'>
+    <a class="show-link" href='#'>${this.title}</a>
+    <button data-action='edit-book'>Edit</button>
+    <button data-action='delete-book'>Delete</button></li>`
   }
 }

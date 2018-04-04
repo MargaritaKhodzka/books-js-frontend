@@ -37,7 +37,3 @@ ul {
   grid-template-columns: 1fr 1fr;
   grid-gap: 10px;
 }
-
-#books-content #new-comment-container {
-  visibility: hidden;
-}
