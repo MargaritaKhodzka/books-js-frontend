@@ -1,20 +1,20 @@
 class Book {
   constructor(bookJSON) {
-    this.title = bookJSON.title
-    this.id = bookJSON.id
-    this.author = bookJSON.author
     this.comments = []
+    this.id = bookJSON.id
+    this.title = bookJSON.title
+    this.author = bookJSON.author
     this.loadComments(bookJSON.comments)
-  }
-
-  loadComments () {
-    comments.forEach (commentJSON => {
-      this.comments.push(new Comment(commentJSON))
-    })
   }
 
   addComment(newComment) {
     this.comments = this.comments.concat(newComment)
+  }
+
+  loadComments(comments) {
+    comments.forEach (commentJSON => {
+      this.comments.push(new Comment(commentJSON, this.id))
+    })
   }
 
   commentsHTML() {

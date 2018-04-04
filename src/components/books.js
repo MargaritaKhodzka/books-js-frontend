@@ -14,9 +14,9 @@ class Books {
     this.body = document.querySelector('body')
 
     this.booksForm.addEventListener('submit', this.handleAddBook.bind(this))
-    this.bookShowNode.addEventListener('submit', this.handleAddComment.bind(this), false)
-    this.booksNode.addEventListener('click', this.handleBookClick.bind(this))
     this.body.addEventListener('blur', this.updateBook.bind(this), true)
+    this.booksNode.addEventListener('click', this.handleBookClick.bind(this))
+    this.bookShowNode.addEventListener('submit', this.handleAddComment.bind(this))
   }
 
   fetchAndLoadBooks() {
@@ -26,6 +26,10 @@ class Books {
       .catch((error) => console.log(error))
   }
 
+  findById(id) {
+    return this.books.find(book => book.id === +id)
+  }
+
   handleAddBook() {
     event.preventDefault()
     const title = this.bookInput.value
@@ -33,6 +37,36 @@ class Books {
       .then((bookJSON) => this.books.push(new Book(bookJSON)))
       .then(this.render.bind(this))
       .then(() => (this.bookInput.value = ''))
+  }
+
+  updateBook() {
+    if (event.target.className.includes('book-element')) {
+      const { target } = event
+      target.contentEditable = false
+      target.classList.remove('editable')
+      const title = event.target.innerHTML
+      const bookId = target.dataset.bookid
+      this.adapter.updateBook(title, bookId).then(updatedBook => {
+        const newBook = new Book(updatedBook)
+        this.books = this.books.map(
+          book => (book.id === updatedBook.id ? newBook : book)
+        )
+        this.render()
+        this.bookShowNode.innerHTML = newBook.renderShow()
+      })
+    }
+  }
+
+  toggleEditBook() {
+    const { parentElement: target } = event.target
+    if (target.className == 'book-element') {
+      target.classList.add('editable')
+      const bookId = target.dataset.bookid
+      const book = this.books.find(book => book.id === bookId)
+      target.contentEditable = true
+      target.innerHTML = book.title
+      target.focus()
+    }
   }
 
   handleBookClick() {
@@ -51,39 +85,10 @@ class Books {
     }
   }
 
-  toggleEditBook() {
-    const { parentElement: target } = event.target
-    if (target.className == 'book-element') {
-      target.classList.add('editable')
-      const bookId = target.dataset.bookid
-      const book = this.books.find(b => b.id == bookId)
-      target.contentEditable = true
-      target.innerHTML = book.title
-      target.focus()
-    }
-  }
-
-  updateBook() {
-    if (event.target.className.includes('book-element')) {
-      const { target } = event
-      target.contentEditable = false
-      target.classList.remove('editable')
-      const title = event.target.innerHTML
-      const bookId = target.dataset.bookid
-      this.adapter.updateBook(title, bookId).then(updatedBook => {
-        const newBook = new Book(updatedBook)
-        this.books = this.books.map(
-          b => (b.id === updatedBook.id ? newBook : b)
-        )
-        this.render()
-        this.bookShowNode.innerHTML = newBook.renderShow()
-      })
-    }
-  }
-
   removeDeletedBook(deleteResponse) {
     this.books = this.books.filter(book => book.id !== deleteResponse.bookId)
     this.render()
+    this.bookShowNode.innerHTML = ''
   }
 
   booksHTML() {
@@ -94,8 +99,8 @@ class Books {
     this.booksNode.innerHTML = `<ul>${this.booksHTML()}</ul>`
   }
 
-  handleAddComment (e) {
-    e.preventDefault()
+  handleAddComment (event) {
+    event.preventDefault()
     const content = event.target.children[0].value
     const bookId = event.target.dataset.id
     const book = this.books.find(b => b.id === +bookId)

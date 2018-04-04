@@ -1,11 +1,12 @@
 class Comment {
-  constructor (commentJSON) {
+  constructor (commentJSON, bookId) {
     this.content = commentJSON.content
+    this.id = commentJSON.id
+    this.bookId = bookId
   }
 
   render () {
-    return `<li>${this.content}
-    <button data-action='edit-book'>Edit</button>
-    <button data-action='delete-book'>Delete</button></li>`
+    return `<li data-commentid='${this.id}' data-bookid='${this.bookId}'>
+    ${this.content}</li>`
   }
 }
