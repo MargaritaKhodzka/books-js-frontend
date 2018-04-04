@@ -15,10 +15,12 @@ class Books {
     this.body = document.querySelector('body')
 
     this.booksForm.addEventListener('submit', this.handleAddBook.bind(this))
-    this.body.addEventListener('blur', this.updateBook.bind(this), true)
     this.booksNode.addEventListener('click', this.handleBookClick.bind(this))
+    this.body.addEventListener('blur', this.updateBook.bind(this), true)
+
     this.bookShowNode.addEventListener('submit', this.handleAddComment.bind(this))
     this.bookShowNode.addEventListener('click', this.handleCommentClick.bind(this))
+    this.bookShowNode.addEventListener('blur', this.updateComment.bind(this), true)
   }
 
   fetchAndLoadBooks() {
@@ -51,7 +53,8 @@ class Books {
       const title = event.target.innerHTML
       const bookId = target.dataset.bookid
 
-      this.adapter.updateBook(title, bookId).then(updatedBook => {
+      this.adapter.updateBook(title, bookId)
+      .then(updatedBook => {
         const newBook = new Book(updatedBook)
         this.books = this.books.map(
           book => (book.id === updatedBook.id ? newBook : book)
@@ -77,7 +80,7 @@ class Books {
   handleBookClick() {
     if (event.target.className === 'show-link') {
       const bookId = event.target.parentElement.dataset.bookid
-      const book = this.books.find(book => book.id === +bookId)
+      const book = this.findById(bookId)
       this.bookShowNode.innerHTML = book.renderShow()
     } else if (event.target.dataset.action === 'edit-book') {
       this.toggleEditBook()
@@ -104,20 +107,6 @@ class Books {
     this.booksNode.innerHTML = `<ul>${this.booksHTML()}</ul>`
   }
 
-  handleCommentClick() {
-    if (event.target.dataset.action === 'delete-comment') {
-      const { parentElement: target } = event.target
-      const bookId = target.dataset.bookid
-      const commentId = target.dataset.commentid
-      const book = this.books.find(book => book.id === +bookId)
-      this.adapter.deleteComment(bookId, commentId)
-      .then(data => {
-        book.removeComment(data.commentId)
-        this.bookShowNode.innerHTML = book.renderShow()
-      })
-    }
-  }
-
   handleAddComment(event) {
     event.preventDefault()
     const content = event.target.children[0].value
@@ -130,4 +119,52 @@ class Books {
         this.bookShowNode.innerHTML = book.renderShow()
       })
   }
+
+  toggleEditComment() {
+    const { parentElement: target } = event.target
+    target.classList.add('editable')
+    const bookId = target.dataset.bookid
+    const commentId = target.dataset.commentid
+    const book = this.books.find(book => book.id == bookId)
+    const comment = book.comments.find(comment => comment.id === +commentId)
+    target.contentEditable = true
+    target.innerHTML = comment.content
+    target.focus()
+  }
+
+  updateComment() {
+    if (event.target.className === 'editable') {
+      const { target } = event
+      const bookId = target.dataset.bookid
+      const commentId = target.dataset.commentid
+      const book = this.findById(bookId)
+      target.contentEditable = false
+      const content = target.innerHTML
+      target.classList.remove('editable')
+
+      this.adapter.updateComment(bookId, commentId, content)
+      .then(updatedComment => {
+        book.updateComment(updatedComment, bookId)
+        this.bookShowNode.innerHTML = book.renderShow()
+      })
+    }
+  }
+
+  handleCommentClick() {
+    if (event.target.dataset.action === 'edit-comment') {
+      this.toggleEditComment()
+    } else if (event.target.dataset.action === 'delete-comment') {
+      const { parentElement: target } = event.target
+      const bookId = target.dataset.bookid
+      const commentId = target.dataset.commentid
+      const book = this.findById(bookId)
+      this.adapter.deleteComment(bookId, commentId)
+      .then(data => {
+        book.removeComment(data.commentId)
+        this.bookShowNode.innerHTML = book.renderShow()
+      })
+    }
+  }
+
+
 }

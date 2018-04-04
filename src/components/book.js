@@ -7,24 +7,13 @@ class Book {
     this.loadComments(bookJSON.comments)
   }
 
-  removeComment(commentId) {
-    this.comments = this.comments.filter(comment => comment.id !== commentId)
-  }
-
-  addComment(newComment) {
-    this.comments = this.comments.concat(newComment)
-  }
-
-  loadComments(comments) {
-    comments.forEach (commentJSON => {
-      this.comments.push(new Comment(commentJSON, this.id))
-    })
-  }
-
-  commentsHTML() {
-    return this.comments.map(comment => {
-      return comment.render()
-    }).join('')
+  render() {
+    return `<li data-bookid='${this.id}'
+    data-props='${JSON.stringify(this)}'
+    class='book-element'>
+    <a class="show-link" href='#'>${this.title}</a>
+    <button data-action='edit-book'>Edit</button>
+    <button data-action='delete-book'>Delete</button></li>`
   }
 
   renderShow() {
@@ -37,11 +26,27 @@ class Book {
     </form>`
   }
 
-  render() {
-    return `<li data-bookid='${this.id}' data-props='${JSON.stringify(this)}'
-    class='book-element'>
-    <a class="show-link" href='#'>${this.title}</a>
-    <button data-action='edit-book'>Edit</button>
-    <button data-action='delete-book'>Delete</button></li>`
+  commentsHTML() {
+    return this.comments.map(comment => {
+      return comment.render()
+    }).join('')
+  }
+
+  loadComments(comments) {
+    comments.forEach (commentJSON => {
+      this.comments.push(new Comment(commentJSON, this.id))
+    })
+  }
+
+  addComment(newComment) {
+    this.comments = this.comments.concat(newComment)
+  }
+
+  updateComment(updatedComment, bookId) {
+    this.comments = this.comments.map(comment => comment.id === updatedComment.id ? new Comment(updatedComment, bookId) : comment)
+  }
+
+  removeComment(commentId) {
+    this.comments = this.comments.filter(comment => comment.id !== commentId)
   }
 }

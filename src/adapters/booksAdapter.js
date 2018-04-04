@@ -50,6 +50,18 @@ class BooksAdapter {
     .then(res => res.json())
   }
 
+  updateComment(bookId, commentId, content) {
+    const commentUpdateParams = {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ content })
+    }
+    return fetch(`${this.baseUrl}/${bookId}/comments/${commentId}`, commentUpdateParams)
+    .then(res => res.json())
+  }
+
   deleteComment(bookId, commentId) {
     const commentDeleteParams = {
       method: 'DELETE',
