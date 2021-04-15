@@ -11,9 +11,9 @@ class Book {
     return `<li data-bookid='${this.id}'
     data-props='${JSON.stringify(this)}'
     class='book-element'>
-    <a class="show-link" href='#'>${this.title}</a>
-    <button data-action='edit-book'>Edit</button>
-    <button data-action='delete-book'>Delete</button></li>`
+    <a class='show-link' href='#'>${this.title}</a>
+    <button data-action='edit-book'><img id='edit' src='styles/media/edit.png' alt='edit book'/></button>
+    <button data-action='delete-book'><img id='delete' src='styles/media/delete.png' alt='delete book'/></button></li>`
   }
 
   renderShow() {
