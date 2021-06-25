@@ -1,6 +1,6 @@
 class BooksAdapter {
   constructor() {
-    this.baseUrl = 'https://books-app-api.herokuapp.com/'
+    this.baseUrl = 'https://books-app-api.herokuapp.com/api/v1/books'
   }
 
   getBooks() {
