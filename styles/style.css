@@ -34,17 +34,17 @@ input {
   background-color: #FFFFFF;
 }
 
+li {
+  font-family: 'Poppins', sans-serif;
+}
+
 #books-container {
   padding-left: 20px;
 }
 
-ul {
+#books-container ul {
   padding: 0px;
   list-style-type: none;
-}
-
-li {
-  font-family: 'Poppins', sans-serif;
 }
 
 a {
@@ -57,6 +57,22 @@ a:hover {
   color: #7C7C7F;
 }
 
+#book-show ul {
+  list-style-type: none;
+  padding: 0;
+  margin-bottom: 30px;
+}
+
+#book-show li {
+  margin: 0;
+  padding: 5px 5px 5px 20px;
+  list-style: none;
+  background-image: url('media/comment.png');
+  background-repeat: no-repeat;
+  background-position: left center;
+  background-size: 15px;
+}
+
 button {
   border: 1px solid #7C7C7F;
   background-color: #FFFFFF;
@@ -66,10 +82,6 @@ input[type='image'] {
   border: 2px solid #F8F8FF;
   height: 12px;
   width: 12px;
-}
-
-#book-show ul {
-  margin-bottom: 50px;
 }
 
 #new-comment-body {
