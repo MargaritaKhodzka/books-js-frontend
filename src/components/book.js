@@ -12,17 +12,18 @@ class Book {
     data-props='${JSON.stringify(this)}'
     class='book-element'>
     <a class='show-link' href='#'>${this.title}</a>
-    <button data-action='edit-book'><img id='edit' src='styles/media/edit.png' alt='edit book'/></button>
-    <button data-action='delete-book'><img id='delete' src='styles/media/delete.png' alt='delete book'/></button></li>`
+    <input data-action='edit-book' type='image' src='styles/media/edit.png' alt='edit book'>
+    <input data-action='delete-book' type='image' src='styles/media/delete.png' alt='delete book'>
+    </li>`
   }
 
   renderShow() {
     return `<h3>${this.title} by ${this.author}</h3>
-    <h5>Comments:</h5>
+    <h4>Comments:</h4>
     <ul>${this.commentsHTML()}</ul>
     <form id='new-comment-form' data-id=${this.id}>
-      <input type='text' name='comment-body' id='new-comment-body'>
-      <input type='submit' value='Submit comment'>
+      <input type='text' name='comment-body' id='new-comment-body'><br>
+      <input type='submit' id = 'submit' value='Submit comment'>
     </form>`
   }
 

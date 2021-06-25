@@ -8,8 +8,8 @@ class Comment {
   render () {
     return `<li data-commentid='${this.id}' data-bookid='${this.bookId}'>
     ${this.content}
-    <button data-action='edit-comment'>Edit</button>
-    <button data-action='delete-comment'>x</button>
+    <input data-action='edit-comment' type='image' src='styles/media/edit.png' alt='edit comment'>
+    <input data-action='delete-comment' type='image' src='styles/media/delete.png' alt='delete comment'>
     </li>`
   }
 }
